@@ -6,8 +6,9 @@ __pycache__
 
 # Temporary data
 /data*
-/demo/examples
 /model_zoo
+/output*
+/wandb
 /work_dirs*
 .DS_Store
 ._*
