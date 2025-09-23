@@ -5,7 +5,7 @@
 <h2 align="center">UniPixel: Unified Object Referring and Segmentation<br>for Pixel-Level Visual Reasoning</h2>
 
 <p align="center">
-  <a href="https://yeliu.dev/lib/files/UniPixel_NeurIPS2025.pdf" target="_blank"><img src="https://img.shields.io/badge/Paper-Link-blue"></a>
+  <a href="https://arxiv.org/abs/2509.18094" target="_blank"><img src="https://img.shields.io/badge/arXiv-2509.18094-red"></a>
   <a href="https://polyu-chenlab.github.io/unipixel/" target="_blank"><img src="https://img.shields.io/badge/Project-Page-brightgreen"></a>
   <a href="https://huggingface.co/collections/PolyU-ChenLab/unipixel-68cf7137013455e5b15962e8" target="_blank"><img src="https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-Model-blue"></a>
   <a href="https://huggingface.co/datasets/PolyU-ChenLab/UniPixel-SFT-1M" target="_blank"><img src="https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-Dataset-orange"></a>
