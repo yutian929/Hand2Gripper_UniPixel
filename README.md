@@ -9,6 +9,7 @@
   <a href="https://polyu-chenlab.github.io/unipixel/" target="_blank"><img src="https://img.shields.io/badge/Project-Page-brightgreen"></a>
   <a href="https://huggingface.co/collections/PolyU-ChenLab/unipixel-68cf7137013455e5b15962e8" target="_blank"><img src="https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-Model-blue"></a>
   <a href="https://huggingface.co/datasets/PolyU-ChenLab/UniPixel-SFT-1M" target="_blank"><img src="https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-Dataset-orange"></a>
+  <a href="https://modelscope.cn/datasets/yeliudev/UniPixel-SFT-1M" target="_blank"><img src="https://img.shields.io/badge/%E2%9A%A1%20ModelScope-Dataset-725AFB"></a>
 </p>
 
 <p align="center">
