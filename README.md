@@ -26,6 +26,7 @@
 
 ## 🔥 News
 
+- **`2025.09.27`** 🕹️ Try our model on custom data [in one click](#%EF%B8%8F-run-unipixel-in-one-click).
 - **`2025.09.21`** 🔮 Code, model, and dataset release.
 - **`2025.09.18`** 🎉 Our paper has been accepted by [NeurIPS 2025](https://nips.cc/).
 
