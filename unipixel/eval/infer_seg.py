@@ -5,6 +5,7 @@ import copy
 import io
 
 import cv2
+import imageio.v3 as iio
 import nncore
 import numpy as np
 import torch
@@ -12,7 +13,6 @@ from nncore.ops import bbox_iou
 from PIL import Image
 from torch.utils.data import DataLoader, Dataset
 
-import imageio.v3 as iio
 from unipixel.dataset.hybrid import DATASETS
 from unipixel.dataset.utils import process_masks, process_vision_info
 from unipixel.eval.visualizer import Visualizer, random_color

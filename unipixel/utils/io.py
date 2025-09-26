@@ -8,48 +8,42 @@ import nncore
 import numpy as np
 import pysrt
 import torch
-from decord import DECORDError, VideoReader
+from decord import VideoReader
 from PIL import Image
 
 
-def _load_video(path, fps=-1, sample_frames=-1, min_len=-1, max_len=-1, **kwargs):
-    assert (fps > 0 and sample_frames <= 0) or (fps <= 0 and sample_frames > 0)
-    decord.bridge.set_bridge('torch')
-
-    vr = VideoReader(path, **kwargs)
-
-    avg_fps = vr.get_avg_fps()
-    duration = round(len(vr) / avg_fps, 3)
-
-    if min_len >= 0 and duration < min_len:
-        raise RuntimeError(f'Video {path} too short: {duration} < {min_len}')
-    if max_len >= 0 and duration > max_len:
-        raise RuntimeError(f'Video {path} too long: {duration} > {max_len}')
-
-    if fps > 0:
-        inds = np.arange(0, len(vr), avg_fps / fps).round().astype('int').clip(0, len(vr) - 1).tolist()
-    else:
-        inds = np.arange(0, len(vr), (len(vr) - 1) / (sample_frames - 1))[:sample_frames].round().astype(int).tolist()
-        assert len(inds) == sample_frames and inds[0] == 0 and inds[-1] == len(vr) - 1
-
-    video = vr.get_batch(inds)
-    return video
-
-
-def load_video(path, num_threads=0, **kwargs):
-    try:
-        return _load_video(path, num_threads=num_threads, **kwargs)
-    except DECORDError as e:
-        if num_threads == 1:
-            raise e
-        print(f'Decord error: {e} Trying single thread...')
-        return _load_video(path, num_threads=1, **kwargs)
-
-
 def load_image(path):
-    img = Image.open(path).convert('RGB')
-    img = torch.from_numpy(np.array(img)).unsqueeze(0)
-    return img
+    image = Image.open(path).convert('RGB')
+    image = torch.from_numpy(np.array(image)).unsqueeze(0)
+    return image
+
+
+def load_video(path, sample_frames=-1):
+    frame_mode = nncore.is_dir(path)
+
+    if frame_mode:
+        paths = nncore.ls(path, ext=('jpg', 'png'), join_path=True)
+        paths.sort(key=lambda p: int(re.sub(r'^\D*', '', nncore.pure_name(p))))
+        vlen = len(paths)
+    else:
+        decord.bridge.set_bridge('torch')
+        vr = VideoReader(path, num_threads=1)
+        vlen = len(vr)
+
+    if sample_frames > 0 and vlen > sample_frames:
+        inds = np.arange(0, vlen, (vlen - 1) / (sample_frames - 1))[:sample_frames].round().astype(int).tolist()
+        assert len(inds) == sample_frames
+    else:
+        inds = list(range(vlen))
+
+    if frame_mode:
+        images = [paths[i] for i in inds]
+        frames = torch.cat([load_image(i) for i in images])
+    else:
+        frames = vr.get_batch(inds)
+        images = [Image.fromarray(t.numpy()) for t in frames]
+
+    return frames, images
 
 
 def load_frames(paths, sample_frames=-1, sample_type='uniform', sample_for_llm_only=False):

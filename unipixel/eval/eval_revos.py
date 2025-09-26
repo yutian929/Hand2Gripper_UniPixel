@@ -16,8 +16,6 @@ import numpy as np
 import pandas as pd
 from pycocotools import mask as cocomask
 
-from termcolor import colored
-
 NUM_WOEKERS = 128
 
 warnings.filterwarnings("ignore", category=RuntimeWarning)
@@ -297,7 +295,7 @@ def eval_queue(q, rank, out_dict, visa_pred_path):
 
             out_dict[exp_name] = [j, f, a, r]
         except Exception:
-            print(colored(f'error: {exp_name}, {traceback.format_exc()}', 'red'))
+            print(f'error: {exp_name}, {traceback.format_exc()}', 'red')
             out_dict[exp_name] = [0.0, 0.0, 0.0, 0.0]
 
 

@@ -49,6 +49,36 @@
 
 `CT` and `FT` refer to multi-task co-trained and fine-tuned settings, respectively.
 
+## 🕹️ Run UniPixel in One Click
+
+1. Make sure you have [setup the environment](/docs/TRAIN.md#%EF%B8%8F-environment-setup).
+
+2. Run the following script for image or video segmentation.
+
+```shell
+# Set the Python Path
+export PYTHONPATH="./:$PYTHONPATH"
+
+# Run inference on custom data
+python tools/inference.py <media-path> <prompt>
+
+# Example: python tools/inference.py example.jpg 'Please segment the rabbit'
+```
+
+Here, `<media-path>` could be a path to an image, a video, or a folder containing video frames (001.jpg, 002.jpg).
+
+<details>
+<summary>Here are some example prompts</summary>
+
+```
+1. Please segment the tallest giraffe.
+2. Where is the nearest sheep? Please provide the segmentation mask.
+3. Why is the boy crying? Please provide the segmentation mask and explain why.
+4. Who shooted the ball? Please answer the question and provide the segmentation mask.
+5. Please segment the object according to the description: <a-long-description>
+```
+</details>
+
 ## 📦 UniPixel-SFT-1M Dataset
 
 We provide raw images/videos and pre-processed annotations of **23 referring/segmentation/QA datasets**, including our **UniPixel-SFT-1M** for training and multiple benchmarks for evaluation. The list of source datasets is shown below. See our [dataset repo](https://huggingface.co/datasets/PolyU-ChenLab/UniPixel-SFT-1M) for more details.

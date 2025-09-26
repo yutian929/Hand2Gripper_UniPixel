@@ -12,6 +12,7 @@ import cv2
 import decord
 import nncore
 import numpy as np
+import requests
 import torch
 import torchvision.transforms.functional as T
 from PIL import Image
@@ -19,7 +20,6 @@ from pycocotools.mask import decode, frPyObjects, merge
 from torchvision import transforms
 from torchvision.transforms import InterpolationMode
 
-import requests
 from unipixel.constants import IGNORE_INDEX
 from unipixel.conversation import get_conv
 

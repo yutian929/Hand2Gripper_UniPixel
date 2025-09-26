@@ -5,6 +5,8 @@ import copy
 import io
 import re
 
+import imageio.v3 as iio
+import matplotlib.pyplot as plt
 import nncore
 import numpy as np
 import torch
@@ -12,8 +14,6 @@ import torch.nn.functional as F
 import torchvision.transforms.functional as T
 from PIL import Image
 
-import imageio.v3 as iio
-import matplotlib.pyplot as plt
 from unipixel.constants import MEM_TOKEN
 from unipixel.dataset.hybrid import DATASETS
 from unipixel.dataset.utils import process_masks, process_vision_info

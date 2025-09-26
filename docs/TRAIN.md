@@ -66,7 +66,7 @@ UniPixel
       └─ mask_dict.pkl
 ```
 
-## 🕹️ Start Training
+## 🔮 Start Training
 
 Use the following commands to train UniPixel. Our experiments were conducted on **8 NVIDIA RTX 6000 Ada (48G) GPUs**. You may modify `nproc_per_node`, `per_device_train_batch_size`, and `gradient_accumulation_steps` to keep the same global batch size (256 for stage 1 and 2, 32 for stage 3) if you have different device configurations.
 
