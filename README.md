@@ -7,9 +7,9 @@
 <p align="center">
   <a href="https://arxiv.org/abs/2509.18094" target="_blank"><img src="https://img.shields.io/badge/arXiv-2509.18094-red"></a>
   <a href="https://polyu-chenlab.github.io/unipixel/" target="_blank"><img src="https://img.shields.io/badge/Project-Page-brightgreen"></a>
-  <a href="https://huggingface.co/collections/PolyU-ChenLab/unipixel-68cf7137013455e5b15962e8" target="_blank"><img src="https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-Model-blue"></a>
-  <a href="https://huggingface.co/datasets/PolyU-ChenLab/UniPixel-SFT-1M" target="_blank"><img src="https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-Dataset-orange"></a>
+  <a href="https://huggingface.co/collections/PolyU-ChenLab/unipixel-68cf7137013455e5b15962e8" target="_blank"><img src="https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-Collection-orange"></a>
   <a href="https://modelscope.cn/datasets/yeliudev/UniPixel-SFT-1M" target="_blank"><img src="https://img.shields.io/badge/%E2%9A%A1%20ModelScope-Dataset-725AFB"></a>
+  <a href="https://huggingface.co/spaces/PolyU-ChenLab/UniPixel" target="_blank"><img src="https://huggingface.co/datasets/huggingface/badges/resolve/main/open-in-hf-spaces-sm-dark.svg"></a>
 </p>
 
 <p align="center">
@@ -26,7 +26,8 @@
 
 ## 🔥 News
 
-- **`2025.09.27`** 🕹️ Try our model on custom data [in one click](#%EF%B8%8F-run-unipixel-in-one-click).
+- **`2025.10.03`** 🕹️ Our online demo has been available on [Hugging Face Spaces](https://huggingface.co/spaces/PolyU-ChenLab/UniPixel).
+- **`2025.09.27`** 🎮 Try our model on custom data [in one click](#-inference-on-custom-data).
 - **`2025.09.21`** 🔮 Code, model, and dataset release.
 - **`2025.09.18`** 🎉 Our paper has been accepted by [NeurIPS 2025](https://nips.cc/).
 
@@ -50,9 +51,13 @@
 
 `CT` and `FT` refer to multi-task co-training and fine-tuning settings, respectively.
 
-## 🕹️ Run UniPixel in One Click
+## 🕹️ Gradio Demo
 
-1. Make sure you have [setup the environment](/docs/TRAIN.md#%EF%B8%8F-environment-setup).
+Play with our [online demo](https://huggingface.co/spaces/PolyU-ChenLab/UniPixel) or see [DEMO.md](/docs/DEMO.md) for guidelines about how to deploy it locally.
+
+## 🎮 Inference on Custom Data
+
+1. Make sure you have [setup the environment](/docs/TRAIN.md#-environment-setup).
 
 2. Run the following script for image or video segmentation.
 

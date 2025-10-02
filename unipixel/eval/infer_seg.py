@@ -15,10 +15,10 @@ from torch.utils.data import DataLoader, Dataset
 
 from unipixel.dataset.hybrid import DATASETS
 from unipixel.dataset.utils import process_masks, process_vision_info
-from unipixel.eval.visualizer import Visualizer, random_color
 from unipixel.model.builder import build_model
 from unipixel.utils.io import load_frames
 from unipixel.utils.transforms import get_sam2_transform
+from unipixel.utils.visualizer import Visualizer, random_color
 
 
 def get_min_box(tensor, min_area=10):

@@ -1,23 +1,23 @@
 # Modified from https://github.com/facebookresearch/detectron2/blob/main/detectron2/utils/visualizer.py
 
 import colorsys
+import io
 import math
 import random
 from enum import Enum, unique
 
 import cv2
-import numpy as np
-import pycocotools.mask as mask_util
-import torch
-
+import imageio.v3 as iio
 import matplotlib as mpl
 import matplotlib.colors as mplc
 import matplotlib.figure as mplfigure
+import numpy as np
+import pycocotools.mask as mask_util
+import torch
 from matplotlib.backends.backend_agg import FigureCanvasAgg
 
 _SMALL_OBJECT_AREA_THRESH = 1000
 _LARGE_MASK_AREA_THRESH = 120000
-_OFF_WHITE = (1.0, 1.0, 240.0 / 255)
 
 _COLORS = np.array([
     0.000, 0.447, 0.741, 0.850, 0.325, 0.098, 0.929, 0.694, 0.125, 0.494, 0.184, 0.556, 0.466, 0.674, 0.188, 0.301,
@@ -37,17 +37,18 @@ _COLORS = np.array([
 ]).astype(np.float32).reshape(-1, 3)
 
 
-def random_color(rgb=False, maximum=255):
-    """
-    Args:
-        rgb (bool): whether to return RGB colors or BGR colors.
-        maximum (int): either 255 or 1
-
-    Returns:
-        ndarray: a vector of 3 numbers
-    """
+def random_color(rgb=False, maximum=1):
     idx = np.random.randint(0, len(_COLORS))
     ret = _COLORS[idx] * maximum
+    if not rgb:
+        ret = ret[::-1]
+    return ret
+
+
+def sample_color(rgb=False, maximum=1):
+    inds = list(range(len(_COLORS)))
+    random.shuffle(inds)
+    ret = _COLORS[inds] * maximum
     if not rgb:
         ret = ret[::-1]
     return ret
@@ -770,3 +771,23 @@ class Visualizer:
             to the image.
         """
         return self.output
+
+
+def draw_mask(frames, masks, colors=None):
+    if colors is None:
+        colors = [random_color(rgb=True, maximum=1) for _ in range(len(masks))]
+
+    imgs = []
+    for i in range(frames.size(0)):
+        vis = Visualizer(frames[i].numpy())
+
+        for j in range(len(masks)):
+            fig = vis.draw_binary_mask_with_number(masks[j][0, i].bool().numpy(), color=colors[j], alpha=0.3)
+
+        buffer = io.BytesIO()
+        fig.save(buffer)
+        buffer.seek(0)
+        img = iio.imread(buffer)
+        imgs.append(img)
+
+    return imgs

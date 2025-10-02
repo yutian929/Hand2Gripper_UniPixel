@@ -20,10 +20,10 @@ from sam2.modeling.sam2_utils import get_next_point, sample_box_points
 from unipixel.constants import MEM_TOKEN
 from unipixel.dataset.hybrid import DATASETS
 from unipixel.dataset.utils import process_masks, process_vision_info
-from unipixel.eval.visualizer import Visualizer, random_color
 from unipixel.model.builder import build_model
 from unipixel.utils.io import load_frames_with_inds_keep
 from unipixel.utils.transforms import get_sam2_transform
+from unipixel.utils.visualizer import Visualizer, random_color
 
 SEG_MEMORY_PROMPTS = [
     '{} Please localize the relevant objects with IDs.',

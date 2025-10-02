@@ -1,16 +1,15 @@
 # Copyright (c) 2025 Ye Liu. Licensed under the BSD-3-Clause License.
 
 import argparse
-import io
 
 import imageio.v3 as iio
 import nncore
 
 from unipixel.dataset.utils import process_vision_info
-from unipixel.eval.visualizer import Visualizer, random_color
 from unipixel.model.builder import build_model
 from unipixel.utils.io import load_image, load_video
 from unipixel.utils.transforms import get_sam2_transform
+from unipixel.utils.visualizer import draw_mask
 
 BANNER = r"""
 =================================================================================
@@ -72,7 +71,7 @@ if __name__ == '__main__':
             'type': 'video',
             'video': images,
             'min_pixels': 128 * 28 * 28,
-            'max_pixels': 256 * 28 * 28
+            'max_pixels': 256 * 28 * 28 * int(args.sample_frames / len(images))
         }, {
             'type': 'text',
             'text': args.prompt
@@ -107,29 +106,10 @@ if __name__ == '__main__':
     print(f'\n\033[1;32m   Response:\033[0m {response}')
 
     if len(model.seg) >= 1:
-        colors = [random_color(rgb=True, maximum=1) for _ in range(model.seg[0].size(0))]
-
-        imgs = []
-        for i in range(frames.size(0)):
-            vis = Visualizer(frames[i].numpy())
-
-            for obj_idx in range(model.seg[0].size(0)):
-                fig = vis.draw_binary_mask_with_number(
-                    model.seg[0][obj_idx, i].bool().numpy(), color=colors[obj_idx], alpha=0.3)
-
-            buffer = io.BytesIO()
-            fig.save(buffer)
-            buffer.seek(0)
-            img = iio.imread(buffer)
-            imgs.append(img)
+        imgs = draw_mask(frames, model.seg)
 
         nncore.mkdir(args.output_dir)
 
-        if len(imgs) > 1:
-            path = nncore.join(args.output_dir, f'{nncore.pure_name(args.media_path)}.gif')
-            print(f'\033[1;32mOutput Path:\033[0m {path}')
-            iio.imwrite(path, imgs, duration=100, loop=0)
-        else:
-            path = nncore.join(args.output_dir, f'{nncore.pure_name(args.media_path)}.png')
-            print(f'\033[1;32mOutput Path:\033[0m {path}')
-            iio.imwrite(path, img)
+        path = nncore.join(args.output_dir, f"{nncore.pure_name(args.media_path)}.{'gif' if len(imgs) > 1 else 'png'}")
+        print(f'\033[1;32mOutput Path:\033[0m {path}')
+        iio.imwrite(path, imgs, duration=100, loop=0)
