@@ -11,7 +11,7 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
-from sam2.modeling.sam2_utils import DropPath, get_clones, LayerNorm2d
+from sam2.modeling.sam2_utils import DropPath, LayerNorm2d
 
 
 class MaskDownSampler(nn.Module):
@@ -119,7 +119,9 @@ class Fuser(nn.Module):
     def __init__(self, layer, num_layers, dim=None, input_projection=False):
         super().__init__()
         self.proj = nn.Identity()
-        self.layers = get_clones(layer, num_layers)
+        # NOTE: avoid using copy.deepcopy with zero3 or ZeroGPUs
+        self.layers = nn.ModuleList([CXBlock(**layer) for _ in range(num_layers)])
+        # self.layers = get_clones(layer, num_layers)
 
         if input_projection:
             assert dim is not None
@@ -153,6 +155,9 @@ class MemoryEncoder(nn.Module):
         self.out_proj = nn.Identity()
         if out_dim != in_dim:
             self.out_proj = nn.Conv2d(in_dim, out_dim, kernel_size=1)
+
+        # save out_dim to avoid accessing model weights (breaks zero3)
+        self.out_dim = out_dim
 
     def forward(
         self,

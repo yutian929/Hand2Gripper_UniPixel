@@ -126,7 +126,11 @@ class SAM2Base(torch.nn.Module):
         self.mem_dim = self.hidden_dim
         if hasattr(self.memory_encoder, "out_proj") and hasattr(self.memory_encoder.out_proj, "weight"):
             # if there is compression of memories along channel dim
-            self.mem_dim = self.memory_encoder.out_proj.weight.shape[0]
+            # NOTE: avoid directly accessing weights under zero3
+            self.mem_dim = self.memory_encoder.out_dim
+            if self.memory_encoder.out_proj.weight.shape[0] != 0:
+                assert self.mem_dim == self.memory_encoder.out_proj.weight.shape[0]
+            # self.mem_dim = self.memory_encoder.out_proj.weight.shape[0]
         self.num_maskmem = num_maskmem  # Number of memories accessible
         # Temporal encoding of the memories
         self.maskmem_tpos_enc = torch.nn.Parameter(torch.zeros(num_maskmem, 1, 1, self.mem_dim))

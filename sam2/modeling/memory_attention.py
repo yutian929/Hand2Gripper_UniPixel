@@ -11,7 +11,7 @@ from torch import nn, Tensor
 
 from sam2.modeling.sam.transformer import RoPEAttention
 
-from sam2.modeling.sam2_utils import get_activation_fn, get_clones
+from sam2.modeling.sam2_utils import get_activation_fn
 
 
 class MemoryAttentionLayer(nn.Module):
@@ -111,7 +111,9 @@ class MemoryAttention(nn.Module):
     ):
         super().__init__()
         self.d_model = d_model
-        self.layers = get_clones(layer, num_layers)
+        # NOTE: avoid using copy.deepcopy with zero3 or ZeroGPUs
+        self.layers = nn.ModuleList([MemoryAttentionLayer(**layer) for _ in range(num_layers)])
+        # self.layers = get_clones(layer, num_layers)
         self.num_layers = num_layers
         self.norm = nn.LayerNorm(d_model)
         self.pos_enc_at_input = pos_enc_at_input

@@ -49,10 +49,11 @@ function init() {
 }
 """
 
-model, processor = build_model(MODEL)
-device = next(model.parameters()).device
+model, processor = build_model(MODEL, attn_implementation='sdpa')
 
 sam2_transform = get_sam2_transform(model.config.sam2_image_size)
+
+device = torch.device('cuda')
 
 colors = sample_color()
 color_map = {f'Target {i + 1}': f'#{int(c[0]):02x}{int(c[1]):02x}{int(c[2]):02x}' for i, c in enumerate(colors * 255)}
@@ -100,6 +101,8 @@ def update_video(video, prompt_idx):
 
 @spaces.GPU
 def infer_seg(media, query, sample_frames=16, media_type=None):
+    global model
+
     if not media:
         gr.Warning('Please upload an image or a video.')
         return None, None, None
@@ -135,6 +138,8 @@ def infer_seg(media, query, sample_frames=16, media_type=None):
 
     data['frames'] = [sam2_transform(frames).to(model.sam2.dtype)]
     data['frame_size'] = [frames.shape[1:3]]
+
+    model = model.to(device)
 
     output_ids = model.generate(
         **data.to(device),
@@ -182,6 +187,8 @@ infer_seg_video = partial(infer_seg, media_type='video')
 
 @spaces.GPU
 def infer_reg(blob, query, prompt_idx=1, video=None):
+    global model
+
     if blob['background'] is None:
         gr.Warning('Please upload an image or a video.')
         return
@@ -246,6 +253,8 @@ def infer_reg(blob, query, prompt_idx=1, video=None):
     data['frame_size'] = [frames.shape[1:3]]
     data['refer_mask'] = [refer_mask]
 
+    model = model.to(device)
+
     output_ids = model.generate(
         **data.to(device),
         do_sample=False,
@@ -274,7 +283,75 @@ def infer_reg(blob, query, prompt_idx=1, video=None):
 
 
 def build_demo():
-    with gr.Blocks(title=TITLE, js=JS) as demo:
+    apple_theme = gr.themes.Base(
+        primary_hue=gr.themes.colors.blue,
+        secondary_hue=gr.themes.colors.gray,
+        neutral_hue=gr.themes.colors.gray,
+        spacing_size=gr.themes.sizes.spacing_md,
+        radius_size=gr.themes.sizes.radius_md,
+        text_size=gr.themes.sizes.text_md,
+        font=["-apple-system", "BlinkMacSystemFont", "Segoe UI", "Helvetica Neue", "Arial", "sans-serif"],
+        font_mono=["SF Mono", "Monaco", "Inconsolata", "Roboto Mono", "monospace"]).set(
+            body_background_fill="white",
+            body_background_fill_dark="#000000",
+            block_background_fill="#ffffff",
+            block_background_fill_dark="#1c1c1e",
+            block_border_color="#d1d1d6",
+            block_border_color_dark="#38383a",
+            block_border_width="1px",
+            block_label_background_fill="transparent",
+            block_label_background_fill_dark="transparent",
+            block_label_text_color="#1d1d1f",
+            block_label_text_color_dark="#f5f5f7",
+            block_label_text_weight="600",
+            block_label_text_size="*text_sm",
+            block_title_text_weight="600",
+            block_title_text_color="#1d1d1f",
+            block_title_text_color_dark="#f5f5f7",
+            button_primary_background_fill="#007aff",
+            button_primary_background_fill_hover="#0051d5",
+            button_primary_background_fill_dark="#0a84ff",
+            button_primary_background_fill_hover_dark="#409cff",
+            button_primary_text_color="white",
+            button_primary_border_color="transparent",
+            button_secondary_background_fill="#f5f5f7",
+            button_secondary_background_fill_hover="#e8e8ed",
+            button_secondary_background_fill_dark="#2c2c2e",
+            button_secondary_background_fill_hover_dark="#3a3a3c",
+            button_secondary_text_color="#1d1d1f",
+            button_secondary_text_color_dark="#f5f5f7",
+            button_secondary_border_color="transparent",
+            button_cancel_background_fill="#ff3b30",
+            button_cancel_background_fill_hover="#ff453a",
+            button_cancel_text_color="white",
+            input_background_fill="#ffffff",
+            input_background_fill_dark="#1c1c1e",
+            input_border_color="#d1d1d6",
+            input_border_color_dark="#38383a",
+            input_border_color_focus="#007aff",
+            input_border_color_focus_dark="#0a84ff",
+            input_placeholder_color="#8e8e93",
+            input_placeholder_color_dark="#98989d",
+            slider_color="#007aff",
+            slider_color_dark="#0a84ff",
+            checkbox_background_color="#007aff",
+            checkbox_background_color_dark="#0a84ff",
+            checkbox_background_color_selected="#007aff",
+            checkbox_background_color_selected_dark="#0a84ff",
+            checkbox_border_color="#d1d1d6",
+            checkbox_border_color_dark="#38383a",
+            checkbox_border_color_selected="#007aff",
+            checkbox_border_color_selected_dark="#0a84ff",
+            panel_background_fill="#f5f5f7",
+            panel_background_fill_dark="#1c1c1e",
+            panel_border_color="#d1d1d6",
+            panel_border_color_dark="#38383a",
+            shadow_drop="0px 1px 3px 0px rgba(0,0,0,0.1)",
+            shadow_drop_lg="0px 10px 30px 0px rgba(0,0,0,0.15)",
+            loader_color="#007aff",
+            loader_color_dark="#0a84ff")
+
+    with gr.Blocks(title=TITLE, js=JS, theme=apple_theme) as demo:
         gr.HTML(HEADER)
 
         with gr.Tab('Image Segmentation'):
