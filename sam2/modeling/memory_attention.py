@@ -32,8 +32,8 @@ class MemoryAttentionLayer(nn.Module):
         self.d_model = d_model
         self.dim_feedforward = dim_feedforward
         self.dropout_value = dropout
-        self.self_attn = self_attention
-        self.cross_attn_image = cross_attention
+        self.self_attn = RoPEAttention(**self_attention)
+        self.cross_attn_image = RoPEAttention(**cross_attention)
 
         # Implementation of Feedforward model
         self.linear1 = nn.Linear(d_model, dim_feedforward)

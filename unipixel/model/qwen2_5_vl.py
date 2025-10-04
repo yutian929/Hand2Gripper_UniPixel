@@ -18,7 +18,7 @@ from sam2.modeling.sam.prompt_encoder import PromptEncoder
 from sam2.sam2_train import BatchedVideoDatapoint
 
 
-def cache_state_hook(module, inputs, ouputs=None):
+def cache_state_hook(module, inputs, outputs=None):
     module.state = inputs[0] if isinstance(inputs, tuple) else inputs
 
 

@@ -1,6 +1,5 @@
 # Copyright (c) 2025 Ye Liu. Licensed under the BSD-3-Clause license.
 
-import os
 import re
 import uuid
 from functools import partial
@@ -19,8 +18,6 @@ from unipixel.model.builder import build_model
 from unipixel.utils.io import load_image, load_video
 from unipixel.utils.transforms import get_sam2_transform
 from unipixel.utils.visualizer import draw_mask, sample_color
-
-PATH = os.path.abspath(os.path.dirname(os.path.realpath(__file__)))
 
 MODEL = 'PolyU-ChenLab/UniPixel-3B'
 
