@@ -23,7 +23,7 @@
 
 ## 🔥 News
 
-- **`2025.10.03`** 🕹️ Our online demo has been available on [Hugging Face Spaces](https://huggingface.co/spaces/PolyU-ChenLab/UniPixel).
+- **`2025.10.03`** 🕹️ Our online demo is available on [Hugging Face Spaces](https://huggingface.co/spaces/PolyU-ChenLab/UniPixel). Enjoy!
 - **`2025.09.27`** 🎮 Try our model on custom data [in one click](#-inference-on-custom-data).
 - **`2025.09.21`** 🔮 Code, model, and dataset release.
 - **`2025.09.18`** 🎉 Our paper has been accepted by [NeurIPS 2025](https://nips.cc/).
@@ -52,9 +52,9 @@
 
 🌾 Turn on your sound and enjoy the BGM from [Stardew Valley](https://www.stardewvalley.net/)!
 
-https://github.com/user-attachments/assets/5d675818-fac0-40c5-8855-e45d76ea4175
+https://github.com/user-attachments/assets/e9a2cb93-7800-4e7a-a452-75adea83dbfb
 
-Play with our [online demo](https://huggingface.co/spaces/PolyU-ChenLab/UniPixel) or see [DEMO.md](/docs/DEMO.md) for guidelines about how to deploy it locally.
+Play with our demo [online](https://huggingface.co/spaces/PolyU-ChenLab/UniPixel) or see [DEMO.md](/docs/DEMO.md) for guidelines about how to deploy it locally.
 
 ## 🎮 Inference on Custom Data
 
