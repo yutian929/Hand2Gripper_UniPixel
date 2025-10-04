@@ -30,8 +30,8 @@
 
 ## 🏆 UniPixel on Public Benchmarks
 
-| Benchmark                         | Evaluation Results (3B/7B)                              |
-|-----------------------------------|---------------------------------------------------------|
+| Benchmark                      | Evaluation Results (3B/7B)                                 |
+|--------------------------------|------------------------------------------------------------|
 | `CT` ReVOS (val)               | `J: 59.7/61.9` `F: 64.4/66.1` `J&F: 62.1/64.0`             |
 | `CT` MeViS (val)               | `J: 50.4/52.3` `F: 55.7/57.1` `J&F: 53.1/54.7`             |
 | `CT` Ref-YouTube-VOS (val)     | `J: 68.6/70.2` `F: 72.3/74.1` `J&F: 70.5/72.1`             |
@@ -49,6 +49,10 @@
 `CT` and `FT` refer to multi-task co-training and fine-tuning settings, respectively.
 
 ## 🕹️ Gradio Demo
+
+🌾 Enjoy the BGM from [Stardew Valley](https://www.stardewvalley.net/)!
+
+https://github.com/user-attachments/assets/5d675818-fac0-40c5-8855-e45d76ea4175
 
 Play with our [online demo](https://huggingface.co/spaces/PolyU-ChenLab/UniPixel) or see [DEMO.md](/docs/DEMO.md) for guidelines about how to deploy it locally.
 
