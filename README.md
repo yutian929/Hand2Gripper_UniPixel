@@ -50,7 +50,7 @@
 
 ## 🕹️ Gradio Demo
 
-🌾 Enjoy the BGM from [Stardew Valley](https://www.stardewvalley.net/)!
+🌾 Turn on your sound and enjoy the BGM from [Stardew Valley](https://www.stardewvalley.net/)!
 
 https://github.com/user-attachments/assets/5d675818-fac0-40c5-8855-e45d76ea4175
 
