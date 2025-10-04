@@ -27,7 +27,7 @@ MODEL = 'PolyU-ChenLab/UniPixel-3B'
 TITLE = 'UniPixel: Unified Object Referring and Segmentation for Pixel-Level Visual Reasoning'
 
 HEADER = """
-<p align="center" style="margin: 1em 0 2em;"><img width="280" src="https://raw.githubusercontent.com/PolyU-ChenLab/UniPixel/refs/heads/main/.github/logo.png"></p>
+<p align="center" style="margin: 1em 0 2em;"><img width="260" src="https://raw.githubusercontent.com/PolyU-ChenLab/UniPixel/refs/heads/main/.github/logo.png"></p>
 <h3 align="center">Unified Object Referring and Segmentation for Pixel-Level Visual Reasoning</h3>
 <div style="display: flex; justify-content: center; gap: 5px;">
     <a href="https://arxiv.org/abs/2509.18094" target="_blank"><img src="https://img.shields.io/badge/arXiv-2509.18094-red"></a>
@@ -46,6 +46,11 @@ function init() {
     if (window.innerWidth >= 1536) {
         document.querySelector('main').style.maxWidth = '1536px'
     }
+
+    document.getElementById('query_1').addEventListener('keydown', function f1(e) { if (e.key === 'Enter') { document.getElementById('submit_1').click() } })
+    document.getElementById('query_2').addEventListener('keydown', function f2(e) { if (e.key === 'Enter') { document.getElementById('submit_2').click() } })
+    document.getElementById('query_3').addEventListener('keydown', function f3(e) { if (e.key === 'Enter') { document.getElementById('submit_3').click() } })
+    document.getElementById('query_4').addEventListener('keydown', function f4(e) { if (e.key === 'Enter') { document.getElementById('submit_4').click() } })
 }
 """
 
@@ -91,12 +96,12 @@ def update_region(blob):
 
 def update_video(video, prompt_idx):
     if video is None:
-        return
+        return gr.ImageEditor(value=None, interactive=False)
 
     _, images = load_video(video, sample_frames=16)
-    path = images[prompt_idx - 1]
+    component = gr.ImageEditor(value=images[prompt_idx - 1], interactive=True)
 
-    return path
+    return component
 
 
 @spaces.GPU
@@ -283,75 +288,7 @@ def infer_reg(blob, query, prompt_idx=1, video=None):
 
 
 def build_demo():
-    apple_theme = gr.themes.Base(
-        primary_hue=gr.themes.colors.blue,
-        secondary_hue=gr.themes.colors.gray,
-        neutral_hue=gr.themes.colors.gray,
-        spacing_size=gr.themes.sizes.spacing_md,
-        radius_size=gr.themes.sizes.radius_md,
-        text_size=gr.themes.sizes.text_md,
-        font=["-apple-system", "BlinkMacSystemFont", "Segoe UI", "Helvetica Neue", "Arial", "sans-serif"],
-        font_mono=["SF Mono", "Monaco", "Inconsolata", "Roboto Mono", "monospace"]).set(
-            body_background_fill="white",
-            body_background_fill_dark="#000000",
-            block_background_fill="#ffffff",
-            block_background_fill_dark="#1c1c1e",
-            block_border_color="#d1d1d6",
-            block_border_color_dark="#38383a",
-            block_border_width="1px",
-            block_label_background_fill="transparent",
-            block_label_background_fill_dark="transparent",
-            block_label_text_color="#1d1d1f",
-            block_label_text_color_dark="#f5f5f7",
-            block_label_text_weight="600",
-            block_label_text_size="*text_sm",
-            block_title_text_weight="600",
-            block_title_text_color="#1d1d1f",
-            block_title_text_color_dark="#f5f5f7",
-            button_primary_background_fill="#007aff",
-            button_primary_background_fill_hover="#0051d5",
-            button_primary_background_fill_dark="#0a84ff",
-            button_primary_background_fill_hover_dark="#409cff",
-            button_primary_text_color="white",
-            button_primary_border_color="transparent",
-            button_secondary_background_fill="#f5f5f7",
-            button_secondary_background_fill_hover="#e8e8ed",
-            button_secondary_background_fill_dark="#2c2c2e",
-            button_secondary_background_fill_hover_dark="#3a3a3c",
-            button_secondary_text_color="#1d1d1f",
-            button_secondary_text_color_dark="#f5f5f7",
-            button_secondary_border_color="transparent",
-            button_cancel_background_fill="#ff3b30",
-            button_cancel_background_fill_hover="#ff453a",
-            button_cancel_text_color="white",
-            input_background_fill="#ffffff",
-            input_background_fill_dark="#1c1c1e",
-            input_border_color="#d1d1d6",
-            input_border_color_dark="#38383a",
-            input_border_color_focus="#007aff",
-            input_border_color_focus_dark="#0a84ff",
-            input_placeholder_color="#8e8e93",
-            input_placeholder_color_dark="#98989d",
-            slider_color="#007aff",
-            slider_color_dark="#0a84ff",
-            checkbox_background_color="#007aff",
-            checkbox_background_color_dark="#0a84ff",
-            checkbox_background_color_selected="#007aff",
-            checkbox_background_color_selected_dark="#0a84ff",
-            checkbox_border_color="#d1d1d6",
-            checkbox_border_color_dark="#38383a",
-            checkbox_border_color_selected="#007aff",
-            checkbox_border_color_selected_dark="#0a84ff",
-            panel_background_fill="#f5f5f7",
-            panel_background_fill_dark="#1c1c1e",
-            panel_border_color="#d1d1d6",
-            panel_border_color_dark="#38383a",
-            shadow_drop="0px 1px 3px 0px rgba(0,0,0,0.1)",
-            shadow_drop_lg="0px 10px 30px 0px rgba(0,0,0,0.15)",
-            loader_color="#007aff",
-            loader_color_dark="#0a84ff")
-
-    with gr.Blocks(title=TITLE, js=JS, theme=apple_theme) as demo:
+    with gr.Blocks(title=TITLE, js=JS, theme=gr.themes.Soft()) as demo:
         gr.HTML(HEADER)
 
         with gr.Tab('Image Segmentation'):
@@ -366,7 +303,7 @@ def build_demo():
 
                     sample_frames_1 = gr.Slider(1, 32, value=16, step=1, visible=False)
 
-                    query_1 = gr.Textbox(label='Text Prompt', placeholder='Please segment the...')
+                    query_1 = gr.Textbox(label='Text Prompt', placeholder='Please segment the...', elem_id='query_1')
 
                     with gr.Row():
                         random_btn_1 = gr.Button(value='🔮 Random', visible=False)
@@ -376,7 +313,8 @@ def build_demo():
 
                         download_btn_1.render()
 
-                        submit_btn_1 = gr.Button(value='🚀 Submit', variant='primary')
+                        submit_btn_1 = gr.Button(value='🚀 Submit', variant='primary', elem_id='submit_1')
+
                 with gr.Column():
                     msk_1.render()
                     ans_1.render()
@@ -405,7 +343,7 @@ def build_demo():
                             label='Sample Frames',
                             info='The number of frames to sample from a video (Default: 16)')
 
-                    query_2 = gr.Textbox(label='Text Prompt', placeholder='Please segment the...')
+                    query_2 = gr.Textbox(label='Text Prompt', placeholder='Please segment the...', elem_id='query_2')
 
                     with gr.Row():
                         random_btn_2 = gr.Button(value='🔮 Random', visible=False)
@@ -415,7 +353,8 @@ def build_demo():
 
                         download_btn_2.render()
 
-                        submit_btn_2 = gr.Button(value='🚀 Submit', variant='primary')
+                        submit_btn_2 = gr.Button(value='🚀 Submit', variant='primary', elem_id='submit_2')
+
                 with gr.Column():
                     msk_2.render()
                     ans_2.render()
@@ -440,7 +379,8 @@ def build_demo():
 
                     prompt_frame_index_3 = gr.Slider(1, 16, value=1, step=1, visible=False)
 
-                    query_3 = gr.Textbox(label='Text Prompt', placeholder='Please describe the highlighted region...')
+                    query_3 = gr.Textbox(
+                        label='Text Prompt', placeholder='Please describe the highlighted region...', elem_id='query_3')
 
                     with gr.Row():
                         random_btn_3 = gr.Button(value='🔮 Random', visible=False)
@@ -448,7 +388,8 @@ def build_demo():
                         reset_btn_3 = gr.ClearButton([media_3, query_3, msk_3, ans_3], value='🗑️ Reset')
                         reset_btn_3.click(reset_reg, None, [prompt_frame_index_3, download_btn_3])
 
-                        submit_btn_3 = gr.Button(value='🚀 Submit', variant='primary')
+                        submit_btn_3 = gr.Button(value='🚀 Submit', variant='primary', elem_id='submit_3')
+
                 with gr.Column():
                     msk_3.render()
                     ans_3.render()
@@ -466,13 +407,14 @@ def build_demo():
                 step=1,
                 interactive=True,
                 label='Prompt Frame Index',
-                info='The index of the frame that includes mask prompts (Default: 1)',
+                info='The index of the frame to apply mask prompts (Default: 1)',
                 render=False)
             msk_4 = gr.ImageEditor(
                 label='Mask Prompt',
                 brush=gr.Brush(colors=['#ff000080'], color_mode='fixed'),
                 transforms=None,
                 layers=False,
+                interactive=False,
                 render=False)
             ans_4 = gr.HighlightedText(label='Model Response', show_inline_category=False, render=False)
 
@@ -485,7 +427,8 @@ def build_demo():
                         prompt_frame_index_4.render()
                         prompt_frame_index_4.change(update_video, [media_4, prompt_frame_index_4], msk_4)
 
-                    query_4 = gr.Textbox(label='Text Prompt', placeholder='Please describe the highlighted region...')
+                    query_4 = gr.Textbox(
+                        label='Text Prompt', placeholder='Please describe the highlighted region...', elem_id='query_4')
 
                     with gr.Row():
                         random_btn_4 = gr.Button(value='🔮 Random', visible=False)
@@ -493,7 +436,8 @@ def build_demo():
                         reset_btn_4 = gr.ClearButton([media_4, query_4, msk_4, ans_4], value='🗑️ Reset')
                         reset_btn_4.click(reset_reg, None, [prompt_frame_index_4, download_btn_4])
 
-                        submit_btn_4 = gr.Button(value='🚀 Submit', variant='primary')
+                        submit_btn_4 = gr.Button(value='🚀 Submit', variant='primary', elem_id='submit_4')
+
                 with gr.Column():
                     msk_4.render()
                     ans_4.render()

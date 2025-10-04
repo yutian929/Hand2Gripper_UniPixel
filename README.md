@@ -21,9 +21,6 @@
 
 <p align="center"><img width="750" src=".github/method.jpg"></p>
 
-> [!NOTE]
-> This repo is under construction. Welcome to ⭐️star/watch it for the latest updates!
-
 ## 🔥 News
 
 - **`2025.10.03`** 🕹️ Our online demo has been available on [Hugging Face Spaces](https://huggingface.co/spaces/PolyU-ChenLab/UniPixel).
