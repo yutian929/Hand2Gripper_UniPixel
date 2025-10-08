@@ -46,7 +46,7 @@
 | `CT` VideoRefer-Bench-Q        | `single-frame: 72.2/73.8` `multi-frame: 72.8/76.3`         |
 | `ZS` MVBench                   | `Acc: 62.5/64.3`                                           |
 
-`CT` and `FT` refer to multi-task co-training and fine-tuning settings, respectively.
+`CT` and `ZS` refer to multi-task co-training and zero-shot settings, respectively.
 
 ## 🕹️ Gradio Demo
 
