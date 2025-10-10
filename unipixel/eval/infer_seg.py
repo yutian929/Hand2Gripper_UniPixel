@@ -75,9 +75,10 @@ def collate(batch):
 
 class EvalDataset(Dataset):
 
-    def __init__(self, annos, sample_frames):
+    def __init__(self, annos, sam2_transform, sample_frames):
         super().__init__()
         self.annos = annos
+        self.sam2_transform = sam2_transform
         self.sample_frames = sample_frames
 
     def __len__(self):
@@ -131,7 +132,7 @@ class EvalDataset(Dataset):
 
         data = processor(text=[text], images=images, videos=videos, return_tensors='pt', **kwargs)
 
-        data['frames'] = [sam2_transform(frames)]
+        data['frames'] = [self.sam2_transform(frames)]
         data['frame_size'] = [frame_size]
 
         data['question'] = question
@@ -173,7 +174,7 @@ if __name__ == '__main__':
     annos = DATASETS.get(args.dataset).load_annos(split=args.split)
     annos = [annos[i::args.chunk] for i in range(args.chunk)][args.index]
 
-    dataset = EvalDataset(annos, args.sample_frames)
+    dataset = EvalDataset(annos, sam2_transform, args.sample_frames)
     data_loader = DataLoader(dataset, collate_fn=collate, num_workers=args.workers)
 
     collected, failed = [], []
