@@ -32,19 +32,19 @@
 
 | Benchmark                      | Evaluation Results (3B/7B)                                 |
 |--------------------------------|------------------------------------------------------------|
-| `CT` ReVOS (val)               | `J: 59.7/61.9` `F: 64.4/66.1` `J&F: 62.1/64.0`             |
-| `CT` MeViS (val)               | `J: 50.4/52.3` `F: 55.7/57.1` `J&F: 53.1/54.7`             |
-| `CT` Ref-YouTube-VOS (val)     | `J: 68.6/70.2` `F: 72.3/74.1` `J&F: 70.5/72.1`             |
-| `CT` Ref-DAVIS17 (val)         | `J: 70.7/71.4` `F: 77.8/80.0` `J&F: 74.2/75.7`             |
-| `CT` Ref-SAV (val)             | `J: 66.9/72.0` `F: 67.6/73.6` `J&F: 67.2/72.8`             |
-| `CT` GroundMoRe (test)         | `J: 36.0/46.2` `F: 38.7/49.0` `J&F: 37.4/47.6`             |
-| `CT` RefCOCO (RES)             | `val: 80.5/82.5` `testA: 82.6/83.8` `testB: 76.9/79.8`     |
-| `CT` RefCOCO+ (RES)            | `val: 74.3/76.5` `testA: 78.9/81.0` `testB: 68.4/70.9`     |
-| `CT` RefCOCOg (RES)            | `val(U): 76.3/77.5` `test(U): 77.0/78.4`                   |
-| `CT` ReasonSeg (val)           | `gIoU: 64.0/65.3` `cIoU: 56.2/58.0`                        |
-| `CT` VideoRefer-Bench-D        | `single-frame: 3.42/3.47` `multi-frame: 3.44/3.48`         |
-| `CT` VideoRefer-Bench-Q        | `single-frame: 72.2/73.8` `multi-frame: 72.8/76.3`         |
-| `ZS` MVBench                   | `Acc: 62.5/64.3`                                           |
+| `CT` ReVOS (val)               | `J: 59.7/61.1` `F: 64.4/65.3` `J&F: 62.1/63.2`             |
+| `CT` MeViS (val)               | `J: 50.4/52.7` `F: 55.7/57.9` `J&F: 53.1/55.3`             |
+| `CT` Ref-YouTube-VOS (val)     | `J: 68.6/69.4` `F: 72.3/72.8` `J&F: 70.5/71.1`             |
+| `CT` Ref-DAVIS17 (val)         | `J: 70.7/72.3` `F: 77.8/80.3` `J&F: 74.2/76.3`             |
+| `CT` Ref-SAV (val)             | `J: 66.9/70.3` `F: 67.6/72.0` `J&F: 67.2/71.2`             |
+| `CT` GroundMoRe (test)         | `J: 36.0/34.7` `F: 38.7/37.3` `J&F: 37.4/36.0`             |
+| `CT` RefCOCO (RES)             | `val: 80.5/81.0` `testA: 82.6/83.0` `testB: 76.9/78.0`     |
+| `CT` RefCOCO+ (RES)            | `val: 74.3/75.5` `testA: 78.9/80.5` `testB: 68.4/70.1`     |
+| `CT` RefCOCOg (RES)            | `val(U): 76.3/76.5` `test(U): 77.0/77.3`                   |
+| `CT` ReasonSeg (val)           | `gIoU: 64.0/62.1` `cIoU: 56.2/59.5`                        |
+| `CT` VideoRefer-Bench-D        | `single-frame: 3.42/3.17` `multi-frame: 3.44/3.21`         |
+| `CT` VideoRefer-Bench-Q        | `single-frame: 72.2/75.3` `multi-frame: 72.8/76.4`         |
+| `ZS` MVBench                   | `Acc: 62.5/64.0`                                           |
 
 `CT` and `ZS` refer to multi-task co-training and zero-shot settings, respectively.
 
@@ -85,6 +85,13 @@ Here, `<media-path>` could be a path to an image, a video, or a folder containin
 5. Please segment the object according to the description: <a-long-description>
 ```
 </details>
+
+## 💻 Model Zoo
+
+| Model | Base MLLM | Checkpoint | Training Log |
+|:-:|:-:|:-:|:-:|
+| UniPixel-3B | [Qwen2.5-VL-3B-Instruct](https://huggingface.co/Qwen/Qwen2.5-VL-3B-Instruct) | [🤗 Link](https://huggingface.co/PolyU-ChenLab/UniPixel-3B) | [🤗 Link](https://huggingface.co/PolyU-ChenLab/UniPixel-3B/resolve/main/trainer_state.json) |
+| UniPixel-7B | [Qwen2.5-VL-7B-Instruct](https://huggingface.co/Qwen/Qwen2.5-VL-7B-Instruct) | [🤗 Link](https://huggingface.co/PolyU-ChenLab/UniPixel-7B) | [🤗 Link](https://huggingface.co/PolyU-ChenLab/UniPixel-7B/resolve/main/trainer_state.json) |
 
 ## 📦 UniPixel-SFT-1M Dataset
 
