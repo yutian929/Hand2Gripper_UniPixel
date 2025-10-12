@@ -37,7 +37,7 @@ def gather_lora_params(model, bias):
                 lora_bias_names.add(bias_name)
             elif 'bias' in n:
                 maybe_lora_bias[n] = p
-        for n, p in maybe_lora_bias:
+        for n, p in maybe_lora_bias.items():
             if n in lora_bias_names:
                 state_dict[n] = p
     else:
