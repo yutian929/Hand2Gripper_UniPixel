@@ -27,7 +27,7 @@ class HybridDataCollator(object):
             warnings.warn(f'The length of input sequence exceeds model max length: {seq_len} > {max_len}')
             input_ids, labels = input_ids[:, :max_len], labels[:, :max_len]
 
-        data = dict(input_ids=input_ids, labels=labels, attention_mask=(input_ids != self.tokenizer.pad_token_id))
+        data = dict(input_ids=input_ids, labels=labels, attention_mask=input_ids != self.tokenizer.pad_token_id)
 
         for key in ('pixel_values', 'pixel_values_videos', 'image_grid_thw', 'video_grid_thw', 'second_per_grid_ts'):
             if key in batch[0]:
