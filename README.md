@@ -32,21 +32,21 @@
 
 | Benchmark                      | Evaluation Results (3B/7B)                                 |
 |--------------------------------|------------------------------------------------------------|
-| `CT` ReVOS (val)               | `J: 59.7/61.1` `F: 64.4/65.3` `J&F: 62.1/63.2`             |
-| `CT` MeViS (val)               | `J: 50.4/52.7` `F: 55.7/57.9` `J&F: 53.1/55.3`             |
-| `CT` Ref-YouTube-VOS (val)     | `J: 68.6/69.4` `F: 72.3/72.8` `J&F: 70.5/71.1`             |
-| `CT` Ref-DAVIS17 (val)         | `J: 70.7/72.3` `F: 77.8/80.3` `J&F: 74.2/76.3`             |
-| `CT` Ref-SAV (val)             | `J: 66.9/70.3` `F: 67.6/72.0` `J&F: 67.2/71.2`             |
-| `CT` GroundMoRe (test)         | `J: 36.0/34.7` `F: 38.7/37.3` `J&F: 37.4/36.0`             |
-| `CT` RefCOCO (RES)             | `val: 80.5/81.0` `testA: 82.6/83.0` `testB: 76.9/78.0`     |
-| `CT` RefCOCO+ (RES)            | `val: 74.3/75.5` `testA: 78.9/80.5` `testB: 68.4/70.1`     |
-| `CT` RefCOCOg (RES)            | `val(U): 76.3/76.5` `test(U): 77.0/77.3`                   |
-| `CT` ReasonSeg (val)           | `gIoU: 64.0/62.1` `cIoU: 56.2/59.5`                        |
-| `CT` VideoRefer-Bench-D        | `single-frame: 3.42/3.17` `multi-frame: 3.44/3.21`         |
-| `CT` VideoRefer-Bench-Q        | `single-frame: 72.2/75.3` `multi-frame: 72.8/76.4`         |
-| `ZS` MVBench                   | `Acc: 62.5/64.0`                                           |
+| `CT` ReVOS (val)               | `J: 59.7/61.7` `F: 64.4/65.7` `J&F: 62.1/63.7`             |
+| `CT` MeViS (val)               | `J: 50.4/53.2` `F: 55.7/58.3` `J&F: 53.1/55.8`             |
+| `CT` Ref-YouTube-VOS (val)     | `J: 68.6/69.5` `F: 72.3/72.4` `J&F: 70.5/71.0`             |
+| `CT` Ref-DAVIS17 (val)         | `J: 70.7/72.7` `F: 77.8/80.1` `J&F: 74.2/76.4`             |
+| `CT` Ref-SAV (val)             | `J: 66.9/68.5` `F: 67.6/69.6` `J&F: 67.2/69.0`             |
+| `CT` GroundMoRe (test)         | `J: 36.0/36.5` `F: 38.7/39.1` `J&F: 37.4/37.8`             |
+| `CT` RefCOCO (RES)             | `val: 80.5/80.8` `testA: 82.6/83.0` `testB: 76.9/77.4`     |
+| `CT` RefCOCO+ (RES)            | `val: 74.3/75.3` `testA: 78.9/80.1` `testB: 68.4/70.0`     |
+| `CT` RefCOCOg (RES)            | `val(U): 76.3/76.4` `test(U): 77.0/77.1`                   |
+| `CT` ReasonSeg (val)           | `gIoU: 64.0/60.5` `cIoU: 56.2/58.7`                        |
+| `CT` VideoRefer-Bench-D        | `single-frame: 3.42/3.37` `multi-frame: 3.44/3.36`         |
+| `CT` VideoRefer-Bench-Q        | `single-frame: 72.2/73.4` `multi-frame: 72.8/74.1`         |
+| `ZS` MVBench                   | `Acc: 62.5/64.3`                                           |
 
-`CT` and `ZS` refer to multi-task co-training and zero-shot settings, respectively.
+`CT` and `ZS` refer to multi-task co-training and zero-shot settings, respectively. Evaluation results under more settings can be found in our paper.
 
 ## 🕹️ Gradio Demo
 
