@@ -7,7 +7,7 @@ imageio==2.37.0
 iopath==0.1.10
 matplotlib==3.10.5
 nncore==0.4.7
-numpy==2.1.2
+# numpy==2.1.2
 openai==1.99.1
 pandas==2.3.1
 peft==0.17.0
@@ -23,11 +23,3 @@ termplotlib==0.3.9
 transformers==4.53.3
 triton==3.3.1
 wandb==0.21.0
-
-# torch==2.7.1+cu128
-# torchvision==0.22.1+cu128
-
-# https://github.com/Dao-AILab/flash-attention/pull/1751
-# flash_attn==2.8.2
-
-# sam2 modified from https://github.com/facebookresearch/sam2/tree/722d1d15111c689908aeeb82d49a57780aac5153
