@@ -5,7 +5,11 @@
 import os
 import imageio.v3 as iio
 import torch
+import cv2
+import torchvision
 import nncore
+from typing import Union
+import numpy as np
 
 from unipixel.dataset.utils import process_vision_info
 from unipixel.model.builder import build_model
@@ -58,7 +62,7 @@ class UniPixel:
         return messages
 
     @torch.inference_mode()
-    def infer(self, media_path: str, prompt: str, output_dir: str = "outputs"):
+    def infer(self, media_path: Union[str, np.ndarray], prompt: str):
         """
         统一推理入口：
         - 读取图片/视频
@@ -66,11 +70,19 @@ class UniPixel:
         - 运行 generate
         - 如果模型产生了 seg 掩膜，返回可视化并保存
         """
-        is_image = any(media_path.lower().endswith(k) for k in (".jpg", ".jpeg", ".png"))
-        if is_image:
-            frames, media_list = load_image(media_path), [media_path]          # frames: (T,H,W,3) 或 (H,W,3)；load_image 返回 Tensor-like
+        if isinstance(media_path, np.ndarray):
+            # 直接传入了图片数组
+            frames = torch.from_numpy(np.array(media_path)).unsqueeze(0)  # Tensor，形状 (1,H,W,3)
+            is_image = True
+            tmp_file_path = "/tmp/unipixel_input_image.png"
+            cv2.imwrite(tmp_file_path, media_path)
+            media_list = [tmp_file_path]
         else:
-            frames, media_list = load_video(media_path, sample_frames=self.sample_frames)
+            is_image = any(media_path.lower().endswith(k) for k in (".jpg", ".jpeg", ".png"))
+            if is_image:
+                frames, media_list = load_image(media_path), [media_path]          # frames: (T,H,W,3) 或 (H,W,3)；load_image 返回 Tensor-like
+            else:
+                frames, media_list = load_video(media_path, sample_frames=self.sample_frames)
 
         # 保证 frames 形状为 (T,H,W,3)
         if frames.ndim == 3:
@@ -103,21 +115,26 @@ class UniPixel:
         if len(output_ids) > 0 and output_ids[-1] == self.processor.tokenizer.eos_token_id:
             output_ids = output_ids[:-1]
         response = self.processor.decode(output_ids, clean_up_tokenization_spaces=False)
-
         # 处理分割结果（如果有）
-        vis_path = None
-        seg_imgs = None
+        seg_image = None
+        seg_mask = None
         if hasattr(self.model, "seg") and len(self.model.seg) >= 1:
-            seg_imgs = draw_mask(frames, self.model.seg)  # list[np.ndarray] 或 (T,H,W,3)
-            nncore.mkdir(output_dir)
-            ext = "gif" if len(seg_imgs) > 1 else "png"
-            vis_path = nncore.join(output_dir, f"{nncore.pure_name(media_path)}.{ext}")
-            iio.imwrite(vis_path, seg_imgs, duration=100, loop=0)  # 单张图也 OK（会保存为 png）
+            seg_mask = self.model.seg  # list[Tensor]
+            seg_imgs = draw_mask(frames, seg_mask)
 
+            seg_image = cv2.cvtColor(seg_imgs[0], cv2.COLOR_RGBA2BGR)
+            seg_mask = seg_mask[0].cpu().numpy()
+            if seg_mask.ndim == 4:
+                seg_mask = np.squeeze(np.squeeze(seg_mask)).astype(bool)
+            elif seg_mask.ndim == 3:
+                seg_mask = np.squeeze(seg_mask).astype(bool)
+            else:
+                seg_mask = seg_mask.astype(bool)
+            
         return {
             "response": response,
-            "mask_visualization_path": vis_path,
-            "seg_images": seg_imgs,  # 内存中的可视化（可能是 list 或 ndarray）
+            "seg_image": seg_image,
+            "seg_mask": seg_mask,   # 内存中的掩膜（可能是 list 或 ndarray）
         }
 
 
@@ -126,8 +143,8 @@ if __name__ == "__main__":
     最小测试：读取本地图片，询问“有几只手，并把它们分割出来”，保存可视化结果到 outputs/
     使用前请把 media_path 改成你的本地图片路径。
     """
-    media_path = "/home/yutian/projs/Hand2Gripper/1.png"
-    prompt = "图片里有几只手？请把所有手分割出来并提供分割掩膜。"
+    media_path = "/home/yutian/projs/Hand2Gripper/P01_01_frame_0000091256.jpg"
+    prompt = "图片里有几只手？请直接回答阿拉伯数字，并把所有手分割出来，且提供分割掩膜。"
 
     up = UniPixel(
         model_path="PolyU-ChenLab/UniPixel-3B",
@@ -135,11 +152,11 @@ if __name__ == "__main__":
         dtype="bfloat16",
         sample_frames=16
     )
-    result = up.infer(media_path, prompt, output_dir="outputs")
+    
+    result = up.infer(cv2.imread(media_path), prompt)
 
+    cv2.imwrite("seg_image.png", result["seg_image"])
+    cv2.imwrite("seg_mask.png", result["seg_mask"].astype(np.uint8) * 255)
+    
     print("\n=== UniPixel 回答 ===")
     print(result["response"])
-    if result["mask_visualization_path"]:
-        print(f"分割可视化已保存到：{result['mask_visualization_path']}")
-    else:
-        print("未返回分割结果（model.seg 为空）。")

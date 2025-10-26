@@ -104,6 +104,8 @@ class PixelQwen2_5_VLForConditionalGeneration(Qwen2_5_VLForConditionalGeneration
                 focal_gamma_obj_score=0.0)
 
         self.post_init()
+        # ensure seg exists so later forward paths can append safely
+        self.seg = []
 
     @torch.no_grad()
     def init_parameters(self):
@@ -160,7 +162,9 @@ class PixelQwen2_5_VLForConditionalGeneration(Qwen2_5_VLForConditionalGeneration
                 refer_mask=None,
                 label_obj_to_frame_idx=None,
                 label_mask=None):
-        if caching := not self.training and (past_key_values is None or len(past_key_values) == 0):
+        
+        caching = (not self.training) and (past_key_values is None or len(past_key_values) == 0)
+        if caching:
             self.seg = []
 
         # move input_ids to the correct device (in case of auto device map)
