@@ -18,7 +18,7 @@ from unipixel.utils.transforms import get_sam2_transform
 from unipixel.utils.visualizer import draw_mask
 
 
-class UniPixel:
+class UniPixelSegmenter:
     """
     统一封装的 UniPixel 推理类。
     - 支持单图 / 视频（示例里用单图）
@@ -146,7 +146,7 @@ if __name__ == "__main__":
     media_path = "/home/yutian/projs/Hand2Gripper/P01_01_frame_0000091256.jpg"
     prompt = "图片里有几只手？请直接回答阿拉伯数字，并把所有手分割出来，且提供分割掩膜。"
 
-    up = UniPixel(
+    up = UniPixelSegmenter(
         model_path="PolyU-ChenLab/UniPixel-3B",
         device="auto",
         dtype="bfloat16",
